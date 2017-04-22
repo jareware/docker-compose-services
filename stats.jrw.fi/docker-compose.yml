@@ -1,0 +1,23 @@
+influxdb:
+  image: influxdb:1.2
+  restart: always
+  ports:
+    - "8086:8086"
+  volumes:
+    - ./influxdb-data:/var/lib/influxdb
+  environment:
+    - VIRTUAL_HOST=stats-db.jrw.fi
+
+# Remember to add a new data source of type "influxdb" and host "http://influxdb:8086"
+grafana:
+  image: grafana/grafana:4.2.0
+  restart: always
+  ports:
+    - "3000:3000"
+  volumes:
+    - ./grafana-data:/var/lib/grafana
+  links:
+    - influxdb
+  environment:
+    - VIRTUAL_HOST=stats.jrw.fi
+    - GF_USERS_ALLOW_SIGN_UP=false
