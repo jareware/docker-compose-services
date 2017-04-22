@@ -21,7 +21,7 @@ Useful links:
 
 Add `influxdb` env var:
 
-    INFLUXDB_HTTP_WRITE_TRACING=true
+    - INFLUXDB_HTTP_WRITE_TRACING=true
 
 to see what clients are writing to the DB.
 
