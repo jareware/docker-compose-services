@@ -1,0 +1,29 @@
+# Additional links:
+# - https://github.com/jwilder/nginx-proxy
+# - https://serversforhackers.com/self-signed-ssl-certificates
+# - http://www.robpeck.com/2010/10/google-chrome-mac-os-x-and-self-signed-ssl-certificates/
+# - http://httpd.apache.org/docs/2.2/programs/htpasswd.html
+proxy:
+  image: jwilder/nginx-proxy:0.6.0
+  restart: always
+  ports:
+    - 80:80
+    - 443:443
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+    - ./htpasswd:/etc/nginx/htpasswd
+    # only needed with letsencrypt:
+    - ./certs:/etc/nginx/certs:ro
+    - /etc/nginx/vhost.d
+    - /usr/share/nginx/html
+
+# see https://github.com/JrCs/docker-letsencrypt-nginx-proxy-companion
+letsencrypt:
+  image: jrcs/letsencrypt-nginx-proxy-companion
+  restart: always
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock:ro
+    - ./certs:/etc/nginx/certs:rw
+  volumes_from:
+    - proxy
+
