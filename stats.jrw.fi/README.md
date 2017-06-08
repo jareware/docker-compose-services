@@ -2,13 +2,10 @@
 
 ## Setup
 
-Add HTTP authentication for the host by adding:
+Remember to create users & DB's:
 
-    ../nginx-proxy/htpasswd/stats-db.jrw.fi
-
-Remember to create a new DB with:
-
-    curl -i -XPOST --user agent:SECRET https://stats-db.jrw.fi/query --data-urlencode "q=CREATE DATABASE home_jrw_fi"
+    curl -X POST https://stats-db.jrw.fi/query --data-urlencode "q=CREATE USER agent WITH PASSWORD 'SECRET' WITH ALL PRIVILEGES"
+    curl -X POST --user agent:SECRET https://stats-db.jrw.fi/query --data-urlencode "q=CREATE DATABASE home_jrw_fi"
 
 Finally, log into Grafana, and add a new data source of type `influxdb` and host `http://influxdb:8086`.
 
